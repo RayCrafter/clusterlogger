@@ -31,6 +31,10 @@ class HazelHenFilter(logging.Filter):
         """The name of the queue from which the job is executed"""
         self.fqdn = socket.getfqdn()
         """The fully qualified domain name."""
+        self.sitename = os.environ.get('SITE_NAME')
+        """The site name of the cluster"""
+        self.platform = os.environ.get('SITE_PLATFORM_NAME')
+        """The cluster platform on the site. E.g. ``hazelhen``."""
 
     def filter(self, record):
         """Add contextual information to the log record
@@ -41,6 +45,8 @@ class HazelHenFilter(logging.Filter):
         :rtype: :class:`bool`
         :raises: None
         """
+        record.sitename = self.sitename
+        record.platform = self.platform
         record.jobid = self.jobid
         record.submitter = self.logname
         record.jobname = self.jobname
