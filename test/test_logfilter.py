@@ -1,0 +1,41 @@
+"""
+Tests for `logfilter` module.
+"""
+import os
+
+import pytest
+
+from clusterlogger import logfilter
+
+
+class DummyRecord(object):
+    pass
+
+
+@pytest.fixture(scope='module')
+def hazelhen_environ(request):
+    envvars = {'PBS_JOBID': '28572',
+               'PBS_O_LOGNAME': 'hpcmscuser',
+               'PBS_JOBNAME': 'loggingtest',
+               'PBS_QUEUE': 'test'}
+    oldvars = {}
+    for k, v in envvars.items():
+        oldvars[k] = os.environ.get(k, '')
+        os.environ[k] = v
+
+    def restore():
+        os.environ.update(oldvars)
+    request.addfinalizer(restore)
+
+
+@pytest.mark.parametrize('attr,envvar',
+                         [('jobid', 'PBS_JOBID'),
+                          ('submitter', 'PBS_O_LOGNAME'),
+                          ('jobname', 'PBS_JOBNAME'),
+                          ('queue', 'PBS_QUEUE')])
+def test_hazelhen_filter(hazelhen_environ, attr, envvar):
+    hhf = logfilter.HazelHenFilter()
+    record = DummyRecord()
+    hhf.filter(record)
+    assert getattr(record, attr) == os.environ[envvar],\
+        'Filter did not add envvar %s to the logrecord attribute %s.' % (envvar, attr)
