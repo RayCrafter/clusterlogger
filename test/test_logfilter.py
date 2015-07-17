@@ -18,7 +18,9 @@ def hazelhen_environ(request):
     envvars = {'PBS_JOBID': '28572',
                'PBS_O_LOGNAME': 'hpcmscuser',
                'PBS_JOBNAME': 'loggingtest',
-               'PBS_QUEUE': 'test'}
+               'PBS_QUEUE': 'test',
+               'SITE_NAME': 'HLRS',
+               'SITE_PLATFORM_NAME': 'hazelhen'}
     oldvars = {}
     for k, v in envvars.items():
         oldvars[k] = os.environ.get(k, '')
@@ -33,7 +35,9 @@ def hazelhen_environ(request):
                          [('jobid', 'PBS_JOBID'),
                           ('submitter', 'PBS_O_LOGNAME'),
                           ('jobname', 'PBS_JOBNAME'),
-                          ('queue', 'PBS_QUEUE')])
+                          ('queue', 'PBS_QUEUE'),
+                          ('sitename', 'SITE_NAME'),
+                          ('platform', 'SITE_PLATFORM_NAME')])
 def test_hazelhen_filter_envvar(hazelhen_environ, attr, envvar):
     hhf = logfilter.HazelHenFilter()
     record = DummyRecord()
