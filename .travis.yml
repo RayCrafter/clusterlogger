@@ -26,7 +26,7 @@ notifications:
     on_failure: never
 deploy:
   provider: pypi
-  user: RayCrafter
+  user: storax
   distributions: sdist bdist_wheel
   on:
     tags: true
