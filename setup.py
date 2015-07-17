@@ -42,7 +42,7 @@ tests_require = ['tox']
 
 setup(
     name='clusterlogger',
-    version='0.1.0',
+    version='0.1.1',
     description='Logging package for contextual information of clusters.',
     long_description=long_description,
     author='David Zuber',
