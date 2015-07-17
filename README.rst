@@ -36,5 +36,5 @@ Logging package for contextual information of clusters.
 Features
 --------
 
-* TODO
+* `Hazel Hen <http://www.hlrs.de/systems/platforms/cray-xc40-hazel-hen/>`_ logging filter.
 
