@@ -2,6 +2,7 @@
 Tests for `logfilter` module.
 """
 import os
+import socket
 
 import pytest
 
@@ -33,9 +34,16 @@ def hazelhen_environ(request):
                           ('submitter', 'PBS_O_LOGNAME'),
                           ('jobname', 'PBS_JOBNAME'),
                           ('queue', 'PBS_QUEUE')])
-def test_hazelhen_filter(hazelhen_environ, attr, envvar):
+def test_hazelhen_filter_envvar(hazelhen_environ, attr, envvar):
     hhf = logfilter.HazelHenFilter()
     record = DummyRecord()
     hhf.filter(record)
     assert getattr(record, attr) == os.environ[envvar],\
         'Filter did not add envvar %s to the logrecord attribute %s.' % (envvar, attr)
+
+
+def test_hazelhen_filter_fqdn(hazelhen_environ):
+    hhf = logfilter.HazelHenFilter()
+    record = DummyRecord()
+    hhf.filter(record)
+    assert record.fqdn == socket.getfqdn()
