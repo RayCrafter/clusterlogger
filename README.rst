@@ -37,4 +37,4 @@ Features
 --------
 
 * `Hazel Hen <http://www.hlrs.de/systems/platforms/cray-xc40-hazel-hen/>`_ logging filter.
-
+* GELFTCPHandler for sending logs to `Graylog <https://www.graylog.org/>`_ via TCP.
