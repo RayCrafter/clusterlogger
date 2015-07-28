@@ -50,10 +50,10 @@ class GELFTCPHandler(logging.handlers.SocketHandler):
 
     def send(self, s):
         if len(s) < self.chunk_size:
-            super(GELFTCPHandler, self).send(self, s)
+            super(GELFTCPHandler, self).send(s)
         else:
             for chunk in graypy.handler.ChunkedGELF(s, self.chunk_size):
-                super(GELFTCPHandler, self).send(self, chunk)
+                super(GELFTCPHandler, self).send(chunk)
 
     def makePickle(self, record):
         message_dict = graypy.handler.make_message_dict(
