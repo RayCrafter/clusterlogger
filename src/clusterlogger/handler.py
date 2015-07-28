@@ -6,6 +6,8 @@ import logging.handlers
 import graypy
 import graypy.handler
 
+__all__ = ['GELFTCPHandler']
+
 
 class GELFTCPHandler(logging.handlers.SocketHandler):
     """Graylog Extended Log Format handler
