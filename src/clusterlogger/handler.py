@@ -1,3 +1,4 @@
+import sys
 import logging
 import json
 import zlib
@@ -43,7 +44,10 @@ class GELFTCPHandler(logging.handlers.SocketHandler):
         self.fqdn = fqdn
         self.localname = localname
         self.facility = facility
-        super(GELFTCPHandler, self).__init__(host, port)
+        if sys.version_info[0] == 2:
+            logging.handlers.SocketHandler.__init__(self, host, port)
+        else:
+            super(GELFTCPHandler, self).__init__(host, port)
 
     def makePickle(self, record):
         message_dict = graypy.handler.make_message_dict(
