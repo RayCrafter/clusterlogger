@@ -34,7 +34,10 @@ class TCPHandler(socketserver.BaseRequestHandler):
 class TCPServer(socketserver.TCPServer):
     def __init__(self, *args, **kwargs):
         self.data = b''
-        super(TCPServer, self).__init__(*args, **kwargs)
+        if sys.version_info[0] == 2:
+            socketserver.TCPServer.__init__(self, *args, **kwargs)
+        else:
+            super(TCPServer, self).__init__(*args, **kwargs)
 
     def handle_timeout(self):
         raise TimeoutError('No (more) data was sent.')
