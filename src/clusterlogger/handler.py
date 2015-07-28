@@ -13,19 +13,15 @@ class GELFTCPHandler(logging.handlers.SocketHandler):
     This handler uses TCP Sockets.
     """
 
-    def __init__(self, host, port=12201, chunk_size=graypy.WAN_CHUNK,
-                 debugging_fields=True, extra_fields=True, fqdn=False,
-                 localname=None, facility=None):
+    def __init__(self, host, port=12201, debugging_fields=True,
+                 extra_fields=True, fqdn=False, localname=None,
+                 facility=None):
         """Initialize a new GELF TCP Handler
 
         :param host: The host of the graylog server.
         :type host: :class:`str`
         :param port: The port of the graylog server (default 12201).
         :type port: :class:`int`
-        :param chunk_size: Message chunk size. Messages larger than this
-            size will be sent to graylog in multiple chunks. Defaults to
-            ``WAN_CHUNK=1420``.
-        :type chunk_size: :class:`int`
         :param debugging_fields: Send debug fields if true (the default).
         :type debugging_fields: :class:`bool`
         :param extra_fields: Send extra fields on the log record to graylog
@@ -42,18 +38,10 @@ class GELFTCPHandler(logging.handlers.SocketHandler):
         """
         self.debugging_fields = debugging_fields
         self.extra_fields = extra_fields
-        self.chunk_size = chunk_size
         self.fqdn = fqdn
         self.localname = localname
         self.facility = facility
         super(GELFTCPHandler, self).__init__(host, port)
-
-    def send(self, s):
-        if len(s) < self.chunk_size:
-            super(GELFTCPHandler, self).send(s)
-        else:
-            for chunk in graypy.handler.ChunkedGELF(s, self.chunk_size):
-                super(GELFTCPHandler, self).send(chunk)
 
     def makePickle(self, record):
         message_dict = graypy.handler.make_message_dict(
